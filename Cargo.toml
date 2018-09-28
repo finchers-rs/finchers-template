@@ -1,0 +1,17 @@
+[package]
+name = "finchers-template-tera"
+version = "0.1.0-dev"
+authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
+publish = false
+
+[dependencies]
+failure = "0.1.2"
+finchers = "0.12.0-alpha.8"
+futures = "0.1.24"
+http = "0.1.13"
+serde = "1.0.79"
+tera = "0.11.16"
+
+[patch.crates-io.finchers]
+git = "https://github.com/finchers-rs/finchers.git"
+tag = "v0.12.0-alpha.8"
