@@ -4,12 +4,17 @@ version = "0.1.0-dev"
 authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
 publish = false
 
+[workspace]
+members = [
+  "crates/example-askama",
+]
+
 [features]
 default = ["tera"]
 strict = []
 
 [dependencies]
-finchers = "0.12.0-alpha.8"
+finchers = "0.12"
 
 failure = "0.1.2"
 futures = "0.1.24"
@@ -18,6 +23,7 @@ mime = "0.3.9"
 mime_guess = "2.0.0-alpha.6"
 serde = "1.0.79"
 
+askama = { version = "0.7", optional = true }
 handlebars = { version = "1", optional = true }
 tera = { version = "0.11", optional = true }
 
@@ -27,3 +33,4 @@ pretty_env_logger = "0.2.4"
 
 [patch.crates-io.finchers]
 git = "https://github.com/finchers-rs/finchers.git"
+tag = "v0.12.0"

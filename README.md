@@ -10,6 +10,7 @@ Template engine support for Finchers.
 
 * Handlebars (https://github.com/sunng87/handlebars-rust)
 * Tera (https://github.com/Keats/tera)
+* Askama (https://github.com/djc/askama)
 
 # License
 [MIT license](LICENSE-MIT) or [Apache License, Version 2.0](LICENSE-APACHE) at your option.

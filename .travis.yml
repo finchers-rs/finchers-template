@@ -47,7 +47,7 @@ matrix:
       script:
         - rm -rf target/doc
         - cargo update
-        - cargo doc --no-deps --features "handlebars tera"
+        - cargo doc --no-deps --features "handlebars tera askama"
         - rm -f target/doc/.lock
         - echo '<meta http-equiv="refresh" content="0;URL=finchers_template/index.html">' > target/doc/index.html
       deploy:
