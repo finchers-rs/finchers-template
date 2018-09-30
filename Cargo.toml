@@ -27,6 +27,10 @@ members = [
 
 [package.metadata.docs.rs]
 features = [
+  "tera",
+  "handlebars",
+  "askama",
+
   # FIXME: remove it as soon as the rustc version used in docs.rs is updated.
   "extern-prelude",
 ]
