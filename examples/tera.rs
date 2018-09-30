@@ -11,7 +11,7 @@ extern crate serde;
 extern crate tera;
 
 use finchers::prelude::*;
-use finchers_template::tera::Renderer;
+use finchers_template::Renderer;
 
 use std::sync::Arc;
 use tera::Tera;

@@ -11,7 +11,7 @@ extern crate serde;
 extern crate handlebars;
 
 use finchers::prelude::*;
-use finchers_template::handlebars::Renderer;
+use finchers_template::Renderer;
 
 use handlebars::Handlebars;
 use std::sync::Arc;
