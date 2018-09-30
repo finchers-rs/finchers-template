@@ -1,10 +1,11 @@
 [package]
-name = "finchers-template-tera"
+name = "finchers-template"
 version = "0.1.0-dev"
 authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
 publish = false
 
 [features]
+default = ["tera"]
 strict = []
 
 [dependencies]
@@ -16,7 +17,9 @@ http = "0.1.13"
 mime = "0.3.9"
 mime_guess = "2.0.0-alpha.6"
 serde = "1.0.79"
-tera = "0.11.16"
+
+handlebars = { version = "1", optional = true }
+tera = { version = "0.11", optional = true }
 
 [dev-dependencies]
 log = "0.4.5"
