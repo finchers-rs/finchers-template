@@ -10,7 +10,7 @@ extern crate pretty_env_logger;
 use finchers::prelude::*;
 
 use askama::Template;
-use finchers_template::askama::TemplateExt;
+use finchers_template::askama::renderer;
 
 #[derive(Debug, Template)]
 #[template(path = "index.html")]
@@ -22,11 +22,10 @@ fn main() {
     std::env::set_var("RUST_LOG", "example_askama=info");
     pretty_env_logger::init();
 
-    let endpoint = path!(@get /).map(|| {
-        UserInfo {
+    let endpoint = path!(@get /)
+        .map(|| UserInfo {
             name: "Alice".into(),
-        }.into_rendered()
-    });
+        }).wrap(renderer());
 
     info!("Listening on http://127.0.0.1:4000");
     finchers::launch(endpoint).start("127.0.0.1:4000");

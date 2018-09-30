@@ -40,85 +40,8 @@ pub use handlebars::Handlebars;
 #[doc(no_inline)]
 pub use tera::Tera;
 
-/// Components for supporting askama.
 #[cfg(feature = "askama")]
-pub mod askama {
-    extern crate askama;
-
-    #[doc(no_inline)]
-    pub use self::askama::Template;
-    pub use self::imp::{Rendered, TemplateExt};
-
-    mod imp {
-        use super::askama::Template;
-
-        use finchers::error;
-        use finchers::error::Error;
-        use finchers::output::{Output, OutputContext};
-
-        use http::Response;
-        use mime;
-        use mime::Mime;
-
-        /// An extension trait for adding method to `T: Template`.
-        pub trait TemplateExt: Template {
-            /// Wrap itself with `Rendered`.
-            fn into_rendered(self) -> Rendered<Self>
-            where
-                Self: Sized,
-            {
-                Rendered {
-                    context: self,
-                    content_type: None,
-                }
-            }
-        }
-
-        impl<T: Template> TemplateExt for T {}
-
-        /// A wrapper struct which adds implementation of `Output` for `T: Template`.
-        #[derive(Debug)]
-        pub struct Rendered<T: Template> {
-            context: T,
-            content_type: Option<Mime>,
-        }
-
-        impl<T> Rendered<T>
-        where
-            T: Template,
-        {
-            /// Set the content type of this value.
-            ///
-            /// The default value is `text/html; charset=utf-8`.
-            pub fn content_type(self, content_type: Mime) -> Rendered<T> {
-                Rendered {
-                    content_type: Some(content_type),
-                    ..self
-                }
-            }
-        }
-
-        impl<T> Output for Rendered<T>
-        where
-            T: Template,
-        {
-            type Body = String;
-            type Error = Error;
-
-            fn respond(
-                self,
-                _: &mut OutputContext<'_>,
-            ) -> Result<Response<Self::Body>, Self::Error> {
-                let body = self.context.render().map_err(error::fail)?;
-                let content_type = self.content_type.unwrap_or_else(|| mime::TEXT_HTML_UTF_8);
-                Ok(Response::builder()
-                    .header("content-type", content_type.as_ref())
-                    .body(body)
-                    .expect("should be a valid response"))
-            }
-        }
-    }
-}
+pub mod askama;
 
 mod imp {
     use finchers;
