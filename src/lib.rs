@@ -1,9 +1,9 @@
+// FIXME: remove this feature gate as soon as the rustc version used in docs.rs is updated
+#![cfg_attr(feature = "extern-prelude", feature(extern_prelude))]
+
 //! Template support for Finchers
 
-// master
-#![doc(html_root_url = "https://finchers-rs.github.io/finchers-template-tera")]
-// released
-//#![doc(html_root_url = "https://docs.rs/finchers-template-tera/0.1.0")]
+#![doc(html_root_url = "https://finchers-rs.github.io/docs/finchers-template/v0.1.0")]
 #![warn(
     missing_docs,
     missing_debug_implementations,

@@ -1,17 +1,42 @@
 [package]
 name = "finchers-template"
-version = "0.1.0-dev"
+version = "0.1.0" # remember to update html_root_url in lib.rs
 authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
-publish = false
+description = """
+Template engine support for Finchers.
+"""
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/finchers-rs/finchers-template.git"
+
+include = [
+  "Cargo.toml",
+  "build.rs",
+  "src/**/*",
+  "tests/**/*",
+  "examples/**/*",
+  "benches/**/*",
+  "LICENSE-MIT",
+  "LICENSE-APACHE",
+]
 
 [workspace]
 members = [
   "crates/example-askama",
 ]
 
+[package.metadata.docs.rs]
+features = [
+  # FIXME: remove it as soon as the rustc version used in docs.rs is updated.
+  "extern-prelude",
+]
+
 [features]
 default = ["tera"]
 strict = []
+
+# FIXME: remove it as soon as the rustc version used in docs.rs is updated
+extern-prelude = []
 
 [dependencies]
 finchers = "0.12"
@@ -30,7 +55,3 @@ tera = { version = "0.11", optional = true }
 [dev-dependencies]
 log = "0.4.5"
 pretty_env_logger = "0.2.4"
-
-[patch.crates-io.finchers]
-git = "https://github.com/finchers-rs/finchers.git"
-tag = "v0.12.0"
