@@ -49,7 +49,7 @@ matrix:
         - cargo update
         - cargo doc --no-deps --features "handlebars tera"
         - rm -f target/doc/.lock
-        - echo '<meta http-equiv="refresh" content="0;URL=finchers_template_tera/index.html">' > target/doc/index.html
+        - echo '<meta http-equiv="refresh" content="0;URL=finchers_template/index.html">' > target/doc/index.html
       deploy:
         provider: pages
         skip_cleanup: true
