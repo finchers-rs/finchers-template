@@ -11,7 +11,7 @@ extern crate serde;
 extern crate tera;
 
 use finchers::prelude::*;
-use finchers_template::Renderer;
+use finchers_template::renderer;
 
 use tera::Tera;
 
@@ -48,7 +48,7 @@ fn main() {
         path!(@get /)
             .map(|| UserInfo {
                 name: "Alice".into(),
-            }).wrap(Renderer::new(engine, UserInfo::TEMPLATE_NAME))
+            }).wrap(renderer(engine, UserInfo::TEMPLATE_NAME))
     };
 
     info!("Listening on http://127.0.0.1:4000");

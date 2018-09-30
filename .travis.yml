@@ -24,6 +24,7 @@ matrix:
       script:
         - cargo update
         - cargo test --all-features
+        - cargo test -p example-askama
         - cargo fmt -- --check
         - if [[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" = release-* ]]; then cargo package; fi
 
@@ -33,13 +34,15 @@ matrix:
       script:
         - cargo update
         - cargo test --all-features
+        - cargo test -p example-askama
 
     - rust: nightly
       before_script:
         - export CARGO_INCREMENTAL=0
       script:
         - cargo update
-        - cargo test --features "handlebars tera"
+        - cargo test --features "handlebars tera askama"
+        - cargo test -p example-askama
 
     - rust: stable
       env: DEPLOY_API_DOC

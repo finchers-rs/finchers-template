@@ -30,7 +30,7 @@ extern crate handlebars;
 #[cfg(feature = "tera")]
 extern crate tera;
 
-pub use self::imp::{Renderer, TemplateEndpoint, TemplateEngine};
+pub use self::imp::{renderer, Renderer, TemplateEndpoint, TemplateEngine};
 
 #[cfg(feature = "handlebars")]
 #[doc(no_inline)]
@@ -142,7 +142,21 @@ mod imp {
         }
     }
 
-    /// The type representing a renderer using Tera template engine.
+    /// Create a new `Renderer` from the specified template engine and template name.
+    pub fn renderer<T>(engine: T, name: impl Into<Cow<'static, str>>) -> Renderer<T>
+    where
+        T: TemplateEngine,
+    {
+        let name = name.into();
+        let content_type = guess_mime_type(&*name);
+        Renderer {
+            engine,
+            name,
+            content_type,
+        }
+    }
+
+    /// The type representing a renderer using the specified template engine.
     #[derive(Debug, Clone)]
     pub struct Renderer<T> {
         engine: T,
@@ -154,15 +168,10 @@ mod imp {
     where
         T: TemplateEngine,
     {
-        /// Create a new `Renderer` from the specified Tera engine and template name.
+        #[doc(hidden)]
+        #[deprecated(note = "use `renderer()` instead.")]
         pub fn new(engine: T, name: impl Into<Cow<'static, str>>) -> Renderer<T> {
-            let name = name.into();
-            let content_type = guess_mime_type(&*name);
-            Renderer {
-                engine,
-                name,
-                content_type,
-            }
+            renderer(engine, name)
         }
 
         /// Set the content-type of generated content.
