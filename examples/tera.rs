@@ -13,57 +13,43 @@ extern crate tera;
 use finchers::prelude::*;
 use finchers_template::Renderer;
 
-use std::sync::Arc;
 use tera::Tera;
+
+#[derive(Debug, Serialize)]
+struct UserInfo {
+    name: String,
+}
+
+impl UserInfo {
+    const TEMPLATE_NAME: &'static str = "index.html";
+
+    const TEMPLATE_STR: &'static str = "\
+        <!doctype html>
+            <html>
+            <head>
+                <meta charset=\"utf-8\" />
+                <title>Greeting</title>
+            </head>
+            <body>
+                Hello, {{ name }}.
+            </body>
+        </html>";
+}
 
 fn main() {
     pretty_env_logger::init();
 
     let mut engine = Tera::default();
     engine
-        .add_raw_template(
-            "index.html",
-            "<!doctype html>\n
-             <html>\n
-               <head>\n
-                 <meta charset=\"utf-8\" />\n
-                 <title>Index</title>\n
-               </head>\n
-               <body>\n
-                  <p>Hello.</p>\n
-               </body>\n
-             </html>",
-        ).unwrap();
-    engine
-        .add_raw_template(
-            "greeting.html",
-            "<!doctype html>\n
-             <html>\n
-               <head>\n
-                 <meta charset=\"utf-8\" />\n
-                 <title>Greeting</title>\n
-               </head>\n
-               <body>\n
-                 Hello, {{ name }}.\n
-               </body>\n
-             </html>",
-        ).unwrap();
-    let engine = Arc::new(engine);
+        .add_raw_template(UserInfo::TEMPLATE_NAME, UserInfo::TEMPLATE_STR)
+        .unwrap();
 
-    let index = path!(@get /).and(Renderer::new(engine.clone(), "index.html"));
-
-    let detailed = {
-        #[derive(Debug, Serialize)]
-        struct Context {
-            name: String,
-        }
-
-        path!(@get / "greeting" / String /)
-            .map(|name| Context { name })
-            .wrap(Renderer::new(engine.clone(), "greeting.html"))
+    let endpoint = {
+        path!(@get /)
+            .map(|| UserInfo {
+                name: "Alice".into(),
+            }).wrap(Renderer::new(engine, UserInfo::TEMPLATE_NAME))
     };
-
-    let endpoint = index.or(detailed);
 
     info!("Listening on http://127.0.0.1:4000");
     finchers::launch(endpoint).start("127.0.0.1:4000");
