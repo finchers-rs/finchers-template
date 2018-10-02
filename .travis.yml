@@ -62,7 +62,7 @@ matrix:
       script:
         - rm -rf target/doc
         - cargo update
-        - cargo doc --no-deps -p askama
+        - cargo doc --no-deps --all-features -p askama -p tera -p handlebars
         - cargo doc --no-deps --all-features
         - rm -f target/doc/.lock
         - echo '<meta http-equiv="refresh" content="0;URL=finchers_template/index.html">' > target/doc/index.html
