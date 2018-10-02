@@ -60,6 +60,8 @@ mod imp {
 
     use failure::SyncFailure;
     use futures::{Future, Poll};
+    use http::header;
+    use http::header::HeaderValue;
     use http::Response;
     use mime::Mime;
     use mime_guess::guess_mime_type;
@@ -150,7 +152,8 @@ mod imp {
         T: TemplateEngine,
     {
         let name = name.into();
-        let content_type = guess_mime_type(&*name);
+        let content_type = HeaderValue::from_shared(guess_mime_type(&*name).as_ref().into())
+            .expect("should be a valid header value");
         Renderer {
             engine,
             name,
@@ -163,7 +166,7 @@ mod imp {
     pub struct Renderer<T> {
         engine: T,
         name: Cow<'static, str>,
-        content_type: Mime,
+        content_type: HeaderValue,
     }
 
     impl<T> Renderer<T>
@@ -181,22 +184,26 @@ mod imp {
         /// By default, the value is guessed from the name of template.
         pub fn content_type(self, content_type: Mime) -> Renderer<T> {
             Renderer {
-                content_type,
+                content_type: HeaderValue::from_shared(content_type.as_ref().into())
+                    .expect("should be a valid header value"),
                 ..self
             }
         }
 
         /// Renders a template using the specified context value.
-        fn render_html<CtxT>(&self, ctx: &CtxT) -> Result<Response<T::Body>, Error>
+        fn render_response<CtxT>(&self, ctx: &CtxT) -> Result<Response<T::Body>, Error>
         where
             CtxT: Serialize,
         {
-            let body = self.engine.render(&self.name, ctx).map_err(Into::into)?;
-
-            Ok(Response::builder()
-                .header("content-type", self.content_type.as_ref())
-                .body(body)
-                .expect("should be a valid response"))
+            let mut response = self
+                .engine
+                .render(&self.name, ctx)
+                .map(Response::new)
+                .map_err(Into::into)?;
+            response
+                .headers_mut()
+                .insert(header::CONTENT_TYPE, self.content_type.clone());
+            Ok(response)
         }
     }
 
@@ -218,7 +225,7 @@ mod imp {
     mod dummy {
         use serde::ser::{Serialize, SerializeMap, Serializer};
 
-        #[derive(Debug, Default, Clone)]
+        #[derive(Debug, Default, Clone, Copy)]
         pub struct DummyContext {
             _priv: (),
         }
@@ -298,7 +305,7 @@ mod imp {
         fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
             let (ctx,) = try_ready!(self.future.poll());
             self.renderer
-                .render_html(&ctx)
+                .render_response(&ctx)
                 .map(|response| (response,).into())
         }
     }
