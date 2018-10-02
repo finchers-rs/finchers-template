@@ -30,7 +30,9 @@ extern crate handlebars;
 #[cfg(feature = "tera")]
 extern crate tera;
 
-pub use self::imp::{renderer, Renderer, TemplateEndpoint, TemplateEngine};
+#[allow(deprecated)]
+pub use self::imp::TemplateEndpoint;
+pub use self::imp::{renderer, RenderEndpoint, Renderer, TemplateEngine};
 
 #[cfg(feature = "handlebars")]
 #[doc(no_inline)]
@@ -203,10 +205,10 @@ mod imp {
         T: TemplateEngine + 'a,
     {
         type Output = (Response<T::Body>,);
-        type Endpoint = TemplateEndpoint<T, endpoint::Cloned<self::dummy::DummyContext>>;
+        type Endpoint = RenderEndpoint<T, endpoint::Cloned<self::dummy::DummyContext>>;
 
         fn into_endpoint(self) -> Self::Endpoint {
-            TemplateEndpoint {
+            RenderEndpoint {
                 renderer: self,
                 endpoint: endpoint::cloned(Default::default()),
             }
@@ -238,24 +240,28 @@ mod imp {
         CtxT: Serialize,
     {
         type Output = (Response<T::Body>,);
-        type Endpoint = TemplateEndpoint<T, E>;
+        type Endpoint = RenderEndpoint<T, E>;
 
         fn wrap(self, endpoint: E) -> Self::Endpoint {
-            TemplateEndpoint {
+            RenderEndpoint {
                 renderer: self,
                 endpoint,
             }
         }
     }
 
+    #[doc(hidden)]
+    #[deprecated(since = "0.1.1", note = "renamed to `RenderEndpoint<T, E>")]
+    pub type TemplateEndpoint<T, E> = RenderEndpoint<T, E>;
+
     /// The type of endpoint which renders a Tera template with the value of specified context type.
     #[derive(Debug)]
-    pub struct TemplateEndpoint<T, E> {
+    pub struct RenderEndpoint<T, E> {
         renderer: Renderer<T>,
         endpoint: E,
     }
 
-    impl<'a, T, E, CtxT> Endpoint<'a> for TemplateEndpoint<T, E>
+    impl<'a, T, E, CtxT> Endpoint<'a> for RenderEndpoint<T, E>
     where
         T: TemplateEngine + 'a,
         E: Endpoint<'a, Output = (CtxT,)>,
