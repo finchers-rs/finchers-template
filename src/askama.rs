@@ -25,16 +25,14 @@ mod imp {
     /// `askama::Template`.
     pub fn renderer() -> Renderer {
         Renderer {
-            content_type: mime::TEXT_HTML_UTF_8,
-            content_type_value: mime::TEXT_HTML_UTF_8.as_ref().parse().unwrap(),
+            content_type: mime::TEXT_HTML_UTF_8.as_ref().parse().unwrap(),
         }
     }
 
     /// The type for modifying the result rendered by Askama to an HTTP response.
     #[derive(Debug)]
     pub struct Renderer {
-        content_type: Mime,
-        content_type_value: HeaderValue,
+        content_type: HeaderValue,
     }
 
     impl Renderer {
@@ -42,13 +40,12 @@ mod imp {
         ///
         /// The default value is `text/html; charset=utf-8`.
         pub fn content_type(self, content_type: Mime) -> Renderer {
-            let content_type_value = content_type
+            let content_type = content_type
                 .as_ref()
                 .parse()
                 .expect("the MIME value should be a valid header value");
             Renderer {
                 content_type,
-                content_type_value,
                 ..self
             }
         }
@@ -60,7 +57,7 @@ mod imp {
             let mut response = ctx.render().map(Response::new)?;
             response
                 .headers_mut()
-                .insert(header::CONTENT_TYPE, self.content_type_value.clone());
+                .insert(header::CONTENT_TYPE, self.content_type.clone());
             Ok(response)
         }
     }
