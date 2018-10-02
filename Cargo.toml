@@ -30,6 +30,7 @@ features = [
   "tera",
   "handlebars",
   "askama",
+  "horrorshow",
 ]
 # FIXME: remove it as soon as the rustc version used in docs.rs is updated
 rustdoc-args = ["--cfg", "finchers_inject_extern_prelude"]
@@ -49,6 +50,7 @@ serde = "1.0.79"
 
 askama = { version = "0.7", optional = true }
 handlebars = { version = "1", optional = true }
+horrorshow = { version = "0.6", optional = true }
 tera = { version = "0.11", optional = true }
 
 [dev-dependencies]
