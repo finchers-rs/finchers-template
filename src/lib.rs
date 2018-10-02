@@ -3,7 +3,7 @@
 
 //! Template support for Finchers
 
-#![doc(html_root_url = "https://docs.rs/finchers-template/0.1.0")]
+#![doc(html_root_url = "https://docs.rs/finchers-template/0.1.1")]
 #![warn(
     missing_docs,
     missing_debug_implementations,

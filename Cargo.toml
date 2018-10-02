@@ -1,6 +1,6 @@
 [package]
 name = "finchers-template"
-version = "0.1.0" # remember to update html_root_url in lib.rs
+version = "0.1.1"
 authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
 description = """
 Template engine support for Finchers.

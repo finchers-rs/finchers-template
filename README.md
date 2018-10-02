@@ -2,7 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/finchers-template.svg)](https://crates.io/crates/finchers-template)
 [![Docs.rs](https://docs.rs/finchers-template/badge.svg)](https://docs.rs/finchers-template)
-[![dependency status](https://deps.rs/crate/finchers-template/0.1.0/status.svg)](https://deps.rs/crate/finchers-template/0.1.0)
+[![dependency status](https://deps.rs/crate/finchers-template/0.1.1/status.svg)](https://deps.rs/crate/finchers-template/0.1.1)
 [![Build Status](https://travis-ci.org/finchers-rs/finchers-template.svg?branch=master)](https://travis-ci.org/finchers-rs/finchers-template)
 
 Template engine support for Finchers.
