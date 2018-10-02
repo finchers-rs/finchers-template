@@ -1,9 +1,9 @@
 // FIXME: remove this feature gate as soon as the rustc version used in docs.rs is updated
-#![cfg_attr(feature = "extern-prelude", feature(extern_prelude))]
+#![cfg_attr(finchers_inject_extern_prelude, feature(extern_prelude))]
 
 //! Template support for Finchers
 
-#![doc(html_root_url = "https://finchers-rs.github.io/docs/finchers-template/v0.1.0")]
+#![doc(html_root_url = "https://docs.rs/finchers-template/0.1.0")]
 #![warn(
     missing_docs,
     missing_debug_implementations,
@@ -12,8 +12,8 @@
     unused,
 )]
 //#![warn(rust_2018_compatibility)]
-#![cfg_attr(feature = "strict", deny(warnings))]
-#![cfg_attr(feature = "strict", doc(test(attr(deny(warnings)))))]
+#![cfg_attr(finchers_deny_warnings, deny(warnings))]
+#![cfg_attr(finchers_deny_warnings, doc(test(attr(deny(warnings)))))]
 
 extern crate failure;
 extern crate finchers;

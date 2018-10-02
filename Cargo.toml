@@ -30,17 +30,12 @@ features = [
   "tera",
   "handlebars",
   "askama",
-
-  # FIXME: remove it as soon as the rustc version used in docs.rs is updated.
-  "extern-prelude",
 ]
+# FIXME: remove it as soon as the rustc version used in docs.rs is updated
+rustdoc-args = ["--cfg", "finchers_inject_extern_prelude"]
 
 [features]
 default = ["tera"]
-strict = []
-
-# FIXME: remove it as soon as the rustc version used in docs.rs is updated
-extern-prelude = []
 
 [dependencies]
 finchers = "0.12"
