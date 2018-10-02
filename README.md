@@ -4,7 +4,6 @@
 [![Docs.rs](https://docs.rs/finchers-template/badge.svg)](https://docs.rs/finchers-template)
 [![dependency status](https://deps.rs/crate/finchers-template/0.1.0/status.svg)](https://deps.rs/crate/finchers-template/0.1.0)
 [![Build Status](https://travis-ci.org/finchers-rs/finchers-template.svg?branch=master)](https://travis-ci.org/finchers-rs/finchers-template)
-[![Coverage Status](https://coveralls.io/repos/github/finchers-rs/finchers-template/badge.svg?branch=master)](https://coveralls.io/github/finchers-rs/finchers-template?branch=master)
 
 Template engine support for Finchers.
 
