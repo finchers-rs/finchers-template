@@ -45,6 +45,9 @@ pub use tera::Tera;
 #[cfg(feature = "askama")]
 pub mod askama;
 
+#[cfg(feature = "horrorshow")]
+pub mod horrorshow;
+
 mod imp {
     use finchers;
     use finchers::endpoint;
