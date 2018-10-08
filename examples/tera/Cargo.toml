@@ -1,0 +1,18 @@
+[package]
+name = "example-tera"
+version = "0.0.0"
+authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
+publish = false
+
+[[bin]]
+name = "example_tera"
+path = "main.rs"
+doc = false
+
+[dependencies]
+finchers = "0.12"
+finchers-template = { path = "../..", features = ["tera"], default-features = false }
+pretty_env_logger = "0.2.4"
+log = "0.4.5"
+serde = "1"
+tera = "0.11"

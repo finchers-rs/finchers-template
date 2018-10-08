@@ -1,5 +1,3 @@
-#![cfg(feature = "handlebars")]
-
 #[macro_use]
 extern crate finchers;
 extern crate finchers_template;

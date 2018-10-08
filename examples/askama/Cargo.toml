@@ -13,14 +13,10 @@ doc = false
 
 [dependencies]
 finchers = "0.12"
-finchers-template = { path = "../..", features = ["askama"] }
+finchers-template = { path = "../..", features = ["askama"], default-features = false }
 askama = "0.7"
 pretty_env_logger = "0.2.4"
 log = "0.4.5"
 
 [build-dependencies]
 askama = "0.7"
-
-[patch.crates-io.finchers]
-git = "https://github.com/finchers-rs/finchers.git"
-tag = "v0.12.0"

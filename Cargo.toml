@@ -22,7 +22,10 @@ include = [
 
 [workspace]
 members = [
-  "crates/example-askama",
+  "examples/askama",
+  "examples/handlebars",
+  "examples/horrorshow",
+  "examples/tera",
 ]
 
 [package.metadata.docs.rs]

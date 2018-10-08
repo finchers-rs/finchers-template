@@ -1,0 +1,17 @@
+[package]
+name = "example-horrorshow"
+version = "0.0.0"
+authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
+publish = false
+
+[[bin]]
+name = "example_horrorshow"
+path = "main.rs"
+doc = false
+
+[dependencies]
+finchers = "0.12"
+finchers-template = { path = "../..", features = ["horrorshow"], default-features = false }
+pretty_env_logger = "0.2.4"
+log = "0.4.5"
+horrorshow = "0.6"

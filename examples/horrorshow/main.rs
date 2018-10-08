@@ -1,5 +1,3 @@
-#![cfg(feature = "horrorshow")]
-
 #[macro_use]
 extern crate finchers;
 extern crate finchers_template;
