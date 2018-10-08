@@ -8,7 +8,6 @@ extern crate pretty_env_logger;
 extern crate horrorshow;
 
 use finchers::prelude::*;
-use finchers_template::horrorshow::renderer;
 
 use horrorshow::helper::doctype;
 
@@ -30,7 +29,7 @@ fn main() {
                     }
                 }
             }
-        }).wrap(renderer());
+        }).wrap(finchers_template::horrorshow());
 
     info!("Listening on http://127.0.0.1:4000");
     finchers::server::start(endpoint)

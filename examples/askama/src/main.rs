@@ -10,7 +10,6 @@ extern crate pretty_env_logger;
 use finchers::prelude::*;
 
 use askama::Template;
-use finchers_template::askama::renderer;
 
 #[derive(Debug, Template)]
 #[template(path = "index.html")]
@@ -25,7 +24,7 @@ fn main() {
     let endpoint = path!(@get /)
         .map(|| UserInfo {
             name: "Alice".into(),
-        }).wrap(renderer());
+        }).wrap(finchers_template::askama());
 
     info!("Listening on http://127.0.0.1:4000");
     finchers::server::start(endpoint)
