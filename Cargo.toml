@@ -52,7 +52,3 @@ askama = { version = "0.7", optional = true }
 handlebars = { version = "1", optional = true }
 horrorshow = { version = "0.6", optional = true }
 tera = { version = "0.11", optional = true }
-
-[dev-dependencies]
-log = "0.4.5"
-pretty_env_logger = "0.2.4"

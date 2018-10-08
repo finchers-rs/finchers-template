@@ -6,12 +6,12 @@ publish = false
 
 [[bin]]
 name = "example_horrorshow"
-path = "main.rs"
+path = "src/main.rs"
 doc = false
 
 [dependencies]
 finchers = "0.13"
-finchers-template = { path = "../..", features = ["horrorshow"], default-features = false }
+finchers-template = { path = "../..", features = ["horrorshow"] }
+horrorshow = "0.6"
 pretty_env_logger = "0.2.4"
 log = "0.4.5"
-horrorshow = "0.6"
