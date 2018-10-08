@@ -11,35 +11,33 @@ branches:
     - master
     - /^\d+\.\d+\.x$/
 
+script:
+  - cargo update
+  - cargo build --all-features
+
 matrix:
   allow_failures:
     - rust: nightly
   fast_finish: true
 
   include:
-    - rust: stable
-      env: RUSTFLAGS="--cfg finchers_deny_warnings"
-      before_script:
-        - rustup component add rustfmt-preview
-      script:
-        - cargo update
-        - cargo test --all-features
-        - cargo test -p example-askama
-        - cargo fmt -- --check
-        - if [[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" = release-* ]]; then cargo publish --dry-run; fi
-
+    - rust: 1.29.1
     - rust: beta
-      env: RUSTFLAGS="--cfg finchers_deny_warnings"
-      script:
-        - cargo update
-        - cargo test --all-features
-        - cargo test -p example-askama
-
     - rust: nightly
+
+    - rust: stable
+      before_script:
+        - rustup component add rustfmt-preview clippy-preview
       script:
         - cargo update
-        - cargo test --all-features
-        - cargo test -p example-askama
+        - cargo test --features handlebars
+        - cargo test --features tera
+        - cargo test --features askama
+        - cargo test --features horrorshow
+        - cargo build --all
+        - cargo fmt -- --check
+        - cargo clippy
+        - if [[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" = release-* ]]; then cargo publish --dry-run; fi
 
     - rust: stable
       env: DEPLOY_API_DOC

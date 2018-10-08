@@ -38,9 +38,6 @@ members = [
   "examples/tera",
 ]
 
-[features]
-default = ["tera"]
-
 [dependencies]
 finchers = "0.13"
 

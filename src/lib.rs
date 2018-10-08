@@ -12,9 +12,10 @@
     unused,
 )]
 //#![warn(rust_2018_compatibility)]
-#![cfg_attr(finchers_deny_warnings, deny(warnings))]
-#![cfg_attr(finchers_deny_warnings, doc(test(attr(deny(warnings)))))]
+#![cfg_attr(test, deny(warnings))]
+#![cfg_attr(test, doc(test(attr(deny(warnings)))))]
 
+#[cfg(any(feature = "tera", feature = "handlebars"))]
 extern crate failure;
 extern crate finchers;
 #[macro_use]
@@ -49,7 +50,6 @@ pub mod askama;
 pub mod horrorshow;
 
 mod imp {
-    use finchers;
     use finchers::endpoint;
     use finchers::endpoint::wrapper::Wrapper;
     use finchers::endpoint::{ApplyContext, ApplyResult, Endpoint, IntoEndpoint};
@@ -61,7 +61,6 @@ mod imp {
     #[cfg(feature = "tera")]
     use tera::Tera;
 
-    use failure::SyncFailure;
     use futures::{Future, Poll};
     use http::header;
     use http::header::HeaderValue;
@@ -130,6 +129,9 @@ mod imp {
         where
             T: Serialize,
         {
+            use failure::SyncFailure;
+            use finchers;
+
             Handlebars::render(self, template_name, ctx)
                 .map_err(|err| finchers::error::fail(SyncFailure::new(err)))
         }
@@ -144,6 +146,9 @@ mod imp {
         where
             T: Serialize,
         {
+            use failure::SyncFailure;
+            use finchers;
+
             Tera::render(self, template_name, ctx)
                 .map_err(|err| finchers::error::fail(SyncFailure::new(err)))
         }
