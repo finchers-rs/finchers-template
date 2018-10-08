@@ -1,6 +1,7 @@
 tag-prefix = "v"
 tag-message = "release {{version}}"
-dev-version-ext = "dev"
+disable-push = true
+no-dev-version = true
 pre-release-commit-message = "bump version to {{version}}"
 
 [[pre-release-replacements]]

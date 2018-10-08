@@ -30,10 +30,10 @@ matrix:
         - rustup component add rustfmt-preview clippy-preview
       script:
         - cargo update
-        - cargo test --features handlebars
-        - cargo test --features tera
-        - cargo test --features askama
-        - cargo test --features horrorshow
+        - cargo test --features use-handlebars
+        - cargo test --features use-tera
+        - cargo test --features use-askama
+        - cargo test --features use-horrorshow
         - cargo build --all
         - cargo fmt -- --check
         - cargo clippy

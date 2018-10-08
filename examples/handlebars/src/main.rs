@@ -9,7 +9,6 @@ extern crate serde;
 extern crate handlebars;
 
 use finchers::prelude::*;
-use finchers_template::renderer;
 
 use handlebars::Handlebars;
 
@@ -45,7 +44,10 @@ fn main() {
     let endpoint = path!(@get /)
         .map(|| UserInfo {
             name: "Alice".into(),
-        }).wrap(renderer(engine, UserInfo::TEMPLATE_NAME));
+        }).wrap(finchers_template::handlebars(
+            engine,
+            UserInfo::TEMPLATE_NAME,
+        ));
 
     info!("Listening on http://127.0.0.1:4000");
     finchers::server::start(endpoint)
