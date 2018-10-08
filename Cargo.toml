@@ -20,14 +20,6 @@ include = [
   "LICENSE-APACHE",
 ]
 
-[workspace]
-members = [
-  "examples/askama",
-  "examples/handlebars",
-  "examples/horrorshow",
-  "examples/tera",
-]
-
 [package.metadata.docs.rs]
 features = [
   "tera",
@@ -38,11 +30,19 @@ features = [
 # FIXME: remove it as soon as the rustc version used in docs.rs is updated
 rustdoc-args = ["--cfg", "finchers_inject_extern_prelude"]
 
+[workspace]
+members = [
+  "examples/askama",
+  "examples/handlebars",
+  "examples/horrorshow",
+  "examples/tera",
+]
+
 [features]
 default = ["tera"]
 
 [dependencies]
-finchers = "0.12"
+finchers = "0.13"
 
 failure = "0.1.2"
 futures = "0.1.24"

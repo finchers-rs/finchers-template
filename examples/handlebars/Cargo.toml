@@ -10,7 +10,7 @@ path = "main.rs"
 doc = false
 
 [dependencies]
-finchers = "0.12"
+finchers = "0.13"
 finchers-template = { path = "../..", features = ["handlebars"], default-features = false }
 pretty_env_logger = "0.2.4"
 log = "0.4.5"

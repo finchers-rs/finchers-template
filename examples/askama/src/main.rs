@@ -28,5 +28,7 @@ fn main() {
         }).wrap(renderer());
 
     info!("Listening on http://127.0.0.1:4000");
-    finchers::launch(endpoint).start("127.0.0.1:4000");
+    finchers::server::start(endpoint)
+        .serve("127.0.0.1:4000")
+        .unwrap_or_else(|e| error!("{}", e));
 }
