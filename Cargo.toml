@@ -45,13 +45,13 @@ failure = "0.1.2"
 futures = "0.1.24"
 http = "0.1.13"
 lazy_static = "1.1.0"
+mime = "0.3.9"
 
 askama = { version = "0.7", optional = true }
 handlebars = { version = "1", optional = true }
 horrorshow = { version = "0.6", optional = true }
 tera = { version = "0.11", optional = true }
 
-mime = { version = "0.3.9", optional = true }
 mime_guess = { version = "2.0.0-alpha.6", optional = true }
 serde = { version = "1.0.79", optional = true }
 
@@ -59,7 +59,7 @@ serde = { version = "1.0.79", optional = true }
 matches = "0.1.8"
 
 [features]
-use-handlebars = ["handlebars", "mime", "mime_guess", "serde"]
-use-tera = ["tera", "mime", "mime_guess", "serde"]
+use-handlebars = ["handlebars", "mime_guess", "serde"]
+use-tera = ["tera", "mime_guess", "serde"]
 use-askama = ["askama", "mime_guess"]
 use-horrorshow = ["horrorshow"]

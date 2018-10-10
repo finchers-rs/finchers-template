@@ -2,13 +2,14 @@
 
 use horrorshow::Template;
 
-use renderer::{renderer, Engine, EngineImpl, Renderer};
+use super::engine::{Engine, EngineImpl};
+use renderer::Renderer;
 
 pub fn horrorshow() -> Renderer<HorrorshowEngine> {
-    renderer(HorrorshowEngine { _priv: () })
+    Renderer::new(HorrorshowEngine::default())
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct HorrorshowEngine {
     _priv: (),
 }
@@ -32,7 +33,7 @@ fn test_horrorshow() {
         }
     };
 
-    let renderer = horrorshow();
-    let body = renderer.engine.render(value).unwrap();
+    let engine = HorrorshowEngine::default();
+    let body = engine.render(value).unwrap();
     assert_eq!(body, "<p>Alice</p>");
 }

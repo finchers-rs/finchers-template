@@ -1,63 +1,85 @@
-#![allow(missing_docs)]
-
 use finchers::endpoint::wrapper::Wrapper;
 use finchers::endpoint::{ApplyContext, ApplyResult, Endpoint};
 use finchers::error;
-use finchers::output::body::ResBody;
 
 use std::fmt;
 use std::marker::PhantomData;
 
-use failure;
 use futures::{Async, Future, Poll};
 use http::header;
 use http::header::HeaderValue;
 use http::Response;
+use mime::Mime;
 
-pub trait Engine<T>: EngineImpl<T> {}
+use backend::engine::Engine;
 
-pub trait EngineImpl<T> {
-    type Body: ResBody;
-    type Error: Into<failure::Error>;
-
-    #[allow(unused_variables)]
-    fn content_type_hint(&self, value: &T) -> Option<HeaderValue> {
-        None
-    }
-
-    fn render(&self, value: T) -> Result<Self::Body, Self::Error>;
+lazy_static! {
+    static ref DEFAULT_CONTENT_TYPE: HeaderValue =
+        HeaderValue::from_static("text/html; charset=utf-8");
 }
 
-pub fn renderer<Eng>(engine: Eng) -> Renderer<Eng> {
-    Renderer { engine }
-}
-
+/// A struct which renders a context value to an HTTP response
+/// using the specified template engine.
 #[derive(Debug)]
 pub struct Renderer<Eng> {
-    pub(crate) engine: Eng,
+    engine: Eng,
+    content_type: Option<HeaderValue>,
 }
 
 impl<Eng> Renderer<Eng> {
+    /// Create a new `Renderer` from the specified engine.
+    pub fn new(engine: Eng) -> Renderer<Eng> {
+        Renderer {
+            engine,
+            content_type: None,
+        }
+    }
+
+    /// Returns a reference to the inner template engine.
+    pub fn engine(&self) -> &Eng {
+        &self.engine
+    }
+
+    /// Returns a mutable reference to the inner template engine.
+    pub fn engine_mut(&mut self) -> &mut Eng {
+        &mut self.engine
+    }
+
+    /// Sets the value of content-type used in the rendered HTTP responses.
+    pub fn content_type(mut self, value: Mime) -> Renderer<Eng> {
+        self.content_type = Some(
+            value
+                .as_ref()
+                .parse()
+                .expect("should be a valid header value"),
+        );
+        self
+    }
+
+    fn get_content_type<T>(&self, value: &T) -> HeaderValue
+    where
+        Eng: Engine<T>,
+    {
+        self.content_type
+            .clone()
+            .or_else(|| self.engine.content_type_hint(&value))
+            .unwrap_or_else(|| DEFAULT_CONTENT_TYPE.clone())
+    }
+
     fn render_response<T>(&self, value: T) -> error::Result<Response<Eng::Body>>
     where
         Eng: Engine<T>,
     {
-        let content_type = self.engine.content_type_hint(&value).unwrap_or_else(|| {
-            lazy_static! {
-                static ref DEF: HeaderValue = HeaderValue::from_static("text/html; charset=utf-8");
-            }
-            DEF.clone()
-        });
-
-        self.engine
+        let content_type = self.get_content_type(&value);
+        let body = self
+            .engine
             .render(value)
-            .map(|body| {
-                let mut response = Response::new(body);
-                response
-                    .headers_mut()
-                    .insert(header::CONTENT_TYPE, content_type);
-                response
-            }).map_err(|err| error::Error::from(err.into()))
+            .map_err(|err| error::Error::from(err.into()))?;
+        let mut response = Response::new(body);
+        response
+            .headers_mut()
+            .insert(header::CONTENT_TYPE, content_type);
+        Ok(response)
     }
 }
 
@@ -160,7 +182,9 @@ where
 
 #[cfg(test)]
 mod tests {
-    use super::{renderer, Engine, EngineImpl};
+    use super::Renderer;
+    use backend::engine::{Engine, EngineImpl};
+
     use finchers::error;
     use finchers::prelude::*;
     use finchers::test;
@@ -182,7 +206,7 @@ mod tests {
             endpoint::syntax::verb::get()
                 .and(endpoint::syntax::param::<String>())
                 .and(endpoint::syntax::eos())
-                .wrap(renderer(DummyEngine))
+                .wrap(Renderer::new(DummyEngine))
         });
 
         let response = runner.perform("/Amaterasu").unwrap();

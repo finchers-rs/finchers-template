@@ -22,7 +22,6 @@ extern crate futures;
 extern crate http;
 #[macro_use]
 extern crate lazy_static;
-#[cfg(any(feature = "use-tera", feature = "use-handlebars"))]
 extern crate mime;
 #[cfg(
     any(
@@ -57,19 +56,19 @@ extern crate askama;
 #[cfg_attr(test, macro_use)]
 extern crate horrorshow;
 
-mod backend;
+pub mod backend;
 mod renderer;
 
-pub use self::renderer::{renderer, Engine, Renderer};
+pub use self::renderer::Renderer;
 
 #[cfg(feature = "use-askama")]
-pub use self::backend::askama::{askama, AskamaEngine};
+pub use self::backend::askama::askama;
 
 #[cfg(feature = "use-handlebars")]
-pub use self::backend::handlebars::{handlebars, HandlebarsEngine};
+pub use self::backend::handlebars::handlebars;
 
 #[cfg(feature = "use-horrorshow")]
-pub use self::backend::horrorshow::{horrorshow, HorrorshowEngine};
+pub use self::backend::horrorshow::horrorshow;
 
 #[cfg(feature = "use-tera")]
-pub use self::backend::tera::{tera, TeraEngine};
+pub use self::backend::tera::tera;
