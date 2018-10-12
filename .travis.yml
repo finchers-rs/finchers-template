@@ -27,12 +27,12 @@ matrix:
     - rust: stable
       before_script:
         - rustup component add rustfmt-preview clippy-preview
-      script:
-        - rake ci_flow
-        - >
-          if [[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" = release-* ]]; then
-            cargo publish --dry-run
-          fi
+      script: >
+        set -e
+        rake ci_flow
+        if [[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" = release-* ]]; then
+          cargo publish --dry-run
+        fi
 
     - rust: nightly
       sudo: required
@@ -50,7 +50,8 @@ matrix:
     - rust: stable
       env: DEPLOY_API_DOC
       before_script:
-      script: |
+      script: >
+        set -e
         rm -rf target/doc
         cargo update
         cargo doc --no-deps --all-features -p askama -p tera -p handlebars -p horrorshow

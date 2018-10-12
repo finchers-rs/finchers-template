@@ -46,7 +46,7 @@ impl<Eng> Renderer<Eng> {
     }
 
     /// Sets the value of content-type used in the rendered HTTP responses.
-    pub fn content_type(mut self, value: Mime) -> Renderer<Eng> {
+    pub fn content_type(mut self, value: &Mime) -> Renderer<Eng> {
         self.content_type = Some(
             value
                 .as_ref()
