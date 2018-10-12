@@ -27,7 +27,7 @@ matrix:
     - rust: stable
       before_script:
         - rustup component add rustfmt-preview clippy-preview
-      script: >
+      script: |
         set -e
         rake ci_flow
         if [[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" = release-* ]]; then
@@ -40,17 +40,19 @@ matrix:
         apt:
           packages:
             - libssl-dev
-      before_script: >
+      before_script: |
         cargo +nightly tarpaulin --version || {
           RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install --force cargo-tarpaulin
         }
-      after_success: >
-        cargo +nightly tarpaulin --out Xml --all-features && bash <(curl -s https://codecov.io/bash)
+      after_success: |
+        set -e
+        cargo +nightly tarpaulin --out Xml --all-features
+        bash <(curl -s https://codecov.io/bash)
 
     - rust: stable
       env: DEPLOY_API_DOC
       before_script:
-      script: >
+      script: |
         set -e
         rm -rf target/doc
         cargo update
