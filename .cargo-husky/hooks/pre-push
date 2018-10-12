@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+[[ -n "${DISABLE_GIT_HOOKS}" ]] && {
+    echo "[warn] the Git hooks are disabled by user."
+    exit 0
+}
+
+BRANCH="$(git symbolic-ref --short HEAD)"
+[[ "${BRANCH:-}" = wip-* ]] && {
+    echo "[info] The current branch is working in progress."
+    exit 0
+}
+
+which rake >/dev/null 2>&1 || {
+    echo "[warn] the command 'rake' is not installed."
+    echo "[warn] the pre-push hook is skipped."
+    exit 0
+}
+
+which cargo >/dev/null 2>&1 || {
+    echo "[warn] Rust toolchain is not installed."
+    echo "[warn] the pre-push hook is skipped."
+    exit 0
+}
+
+rake ci_flow
