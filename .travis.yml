@@ -27,12 +27,11 @@ matrix:
     - rust: stable
       before_script:
         - rustup component add rustfmt-preview clippy-preview
-      script: |
-        set -e
-        rake ci_flow
-        if [[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" = release-* ]]; then
-          cargo publish --dry-run
-        fi
+      script: >-
+        cargo fmt -- --check &&
+        cargo update &&
+        rake ci_flow &&
+        if [[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" = release-* ]]; then; cargo publish --dry-run; fi
 
     - rust: nightly
       sudo: required
