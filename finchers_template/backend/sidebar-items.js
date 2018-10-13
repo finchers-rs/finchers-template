@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AskamaEngine",""],["HandlebarsEngine",""],["HorrorshowEngine",""],["TeraEngine",""]],"trait":[["AsHandlebars",""],["AsTera",""],["Engine","A trait representing a template engine."]]});
